@@ -1,0 +1,15 @@
+# Database Configuration
+DB_HOST=localhost
+DB_USER=root
+DB_PASSWORD=
+DB_NAME=playgenix
+
+# JWT Configuration
+JWT_SECRET_KEY=your-super-secret-jwt-key-change-this-in-production
+
+# Flask Configuration
+FLASK_SECRET_KEY=your-super-secret-flask-key-change-this-in-production
+
+# Server Configuration
+FLASK_ENV=development
+FLASK_DEBUG=True 
