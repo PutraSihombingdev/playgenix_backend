@@ -1,0 +1,311 @@
+{
+  "info": {
+    "_postman_id": "playgenix-api-v1-collection",
+    "name": "PlayGenix API v1",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/x-www-form-urlencoded" }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                { "key": "email", "value": "user@email.com" },
+                { "key": "password", "value": "password123" },
+                { "key": "name", "value": "User Name" }
+              ]
+            },
+            "url": { "raw": "{{base_url}}/api/v1/auth/register", "host": ["{{base_url}}"], "path": ["api", "v1", "auth", "register"] }
+          }
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/x-www-form-urlencoded" }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                { "key": "email", "value": "user@email.com" },
+                { "key": "password", "value": "password123" }
+              ]
+            },
+            "url": { "raw": "{{base_url}}/api/v1/auth/login", "host": ["{{base_url}}"], "path": ["api", "v1", "auth", "login"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Product",
+      "item": [
+        {
+          "name": "Get All Products",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/api/v1/products/", "host": ["{{base_url}}"], "path": ["api", "v1", "products", ""] }
+          }
+        },
+        {
+          "name": "Add Product (Admin)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt}}" },
+              { "key": "Content-Type", "value": "application/x-www-form-urlencoded" }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                { "key": "name", "value": "PS5" },
+                { "key": "description", "value": "Konsol terbaru" },
+                { "key": "price", "value": "8000000" },
+                { "key": "image_url", "value": "https://example.com/ps5.jpg" }
+              ]
+            },
+            "url": { "raw": "{{base_url}}/api/v1/products/", "host": ["{{base_url}}"], "path": ["api", "v1", "products", ""] }
+          }
+        },
+        {
+          "name": "Update Product (Admin)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt}}" },
+              { "key": "Content-Type", "value": "application/x-www-form-urlencoded" }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                { "key": "name", "value": "PS5 Slim" },
+                { "key": "description", "value": "Versi slim" },
+                { "key": "price", "value": "7500000" },
+                { "key": "image_url", "value": "https://example.com/ps5slim.jpg" }
+              ]
+            },
+            "url": { "raw": "{{base_url}}/api/v1/products/1", "host": ["{{base_url}}"], "path": ["api", "v1", "products", "1"] }
+          }
+        },
+        {
+          "name": "Delete Product (Admin)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt}}" }
+            ],
+            "url": { "raw": "{{base_url}}/api/v1/products/1", "host": ["{{base_url}}"], "path": ["api", "v1", "products", "1"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Cart",
+      "item": [
+        {
+          "name": "Get Cart (User)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt}}" }
+            ],
+            "url": { "raw": "{{base_url}}/api/v1/cart/", "host": ["{{base_url}}"], "path": ["api", "v1", "cart", ""] }
+          }
+        },
+        {
+          "name": "Add to Cart (User)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt}}" },
+              { "key": "Content-Type", "value": "application/x-www-form-urlencoded" }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                { "key": "product_id", "value": "1" },
+                { "key": "quantity", "value": "2" }
+              ]
+            },
+            "url": { "raw": "{{base_url}}/api/v1/cart/", "host": ["{{base_url}}"], "path": ["api", "v1", "cart", ""] }
+          }
+        },
+        {
+          "name": "Remove from Cart (User)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt}}" }
+            ],
+            "url": { "raw": "{{base_url}}/api/v1/cart/1", "host": ["{{base_url}}"], "path": ["api", "v1", "cart", "1"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Transaction",
+      "item": [
+        {
+          "name": "Get Transactions (User)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt}}" }
+            ],
+            "url": { "raw": "{{base_url}}/api/v1/transaction/", "host": ["{{base_url}}"], "path": ["api", "v1", "transaction", ""] }
+          }
+        },
+        {
+          "name": "Get All Transactions (Admin)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt}}" }
+            ],
+            "url": { "raw": "{{base_url}}/api/v1/transaction/all", "host": ["{{base_url}}"], "path": ["api", "v1", "transaction", "all"] }
+          }
+        },
+        {
+          "name": "Get Transaction by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt}}" }
+            ],
+            "url": { "raw": "{{base_url}}/api/v1/transaction/1", "host": ["{{base_url}}"], "path": ["api", "v1", "transaction", "1"] }
+          }
+        },
+        {
+          "name": "Checkout (Create Transaction)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt}}" }
+            ],
+            "url": { "raw": "{{base_url}}/api/v1/transaction/", "host": ["{{base_url}}"], "path": ["api", "v1", "transaction", ""] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Payment",
+      "item": [
+        {
+          "name": "Get Payments (User)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt}}" }
+            ],
+            "url": { "raw": "{{base_url}}/api/v1/payment/", "host": ["{{base_url}}"], "path": ["api", "v1", "payment", ""] }
+          }
+        },
+        {
+          "name": "Get All Payments (Admin)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt}}" }
+            ],
+            "url": { "raw": "{{base_url}}/api/v1/payment/all", "host": ["{{base_url}}"], "path": ["api", "v1", "payment", "all"] }
+          }
+        },
+        {
+          "name": "Get Payment by Transaction ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt}}" }
+            ],
+            "url": { "raw": "{{base_url}}/api/v1/payment/1", "host": ["{{base_url}}"], "path": ["api", "v1", "payment", "1"] }
+          }
+        },
+        {
+          "name": "Create Payment",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt}}" },
+              { "key": "Content-Type", "value": "application/x-www-form-urlencoded" }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                { "key": "amount", "value": "100000" },
+                { "key": "method", "value": "manual" }
+              ]
+            },
+            "url": { "raw": "{{base_url}}/api/v1/payment/", "host": ["{{base_url}}"], "path": ["api", "v1", "payment", ""] }
+          }
+        },
+        {
+          "name": "Update Payment Status (PATCH)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt}}" },
+              { "key": "Content-Type", "value": "application/x-www-form-urlencoded" }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                { "key": "status", "value": "paid" }
+              ]
+            },
+            "url": { "raw": "{{base_url}}/api/v1/payment/1", "host": ["{{base_url}}"], "path": ["api", "v1", "payment", "1"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Review",
+      "item": [
+        {
+          "name": "Get All Reviews",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/api/v1/review/", "host": ["{{base_url}}"], "path": ["api", "v1", "review", ""] }
+          }
+        },
+        {
+          "name": "Get Reviews by Product",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/api/v1/review/1", "host": ["{{base_url}}"], "path": ["api", "v1", "review", "1"] }
+          }
+        },
+        {
+          "name": "Add Review (User)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt}}" },
+              { "key": "Content-Type", "value": "application/x-www-form-urlencoded" }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                { "key": "product_id", "value": "1" },
+                { "key": "rating", "value": "5" },
+                { "key": "comment", "value": "Bagus banget!" }
+              ]
+            },
+            "url": { "raw": "{{base_url}}/api/v1/review/", "host": ["{{base_url}}"], "path": ["api", "v1", "review", ""] }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    { "key": "base_url", "value": "http://localhost:5000" },
+    { "key": "jwt", "value": "" }
+  ]
+} 

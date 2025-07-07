@@ -1,12 +1,13 @@
 from flask import Blueprint, request, jsonify, g
 from db import get_connection
-from utils.jwt_helper import jwt_required
-import traceback
+from utils.jwt_helper import jwt_required, only_user
+import traceback # type: ignore 
 
-cart = Blueprint("cart", __name__, url_prefix="/api/v1/cart")
+cart = Blueprint("cart", __name__, url_prefix="/api/v1/cart")       
 
 @cart.route("/", methods=["POST"])
 @jwt_required
+@only_user
 def add_to_cart():
     try:
         data = request.form
@@ -29,6 +30,7 @@ def add_to_cart():
 
 @cart.route("/", methods=["GET"])
 @jwt_required
+@only_user
 def get_cart():
     try:
         user_id = g.user['user_id']
@@ -50,6 +52,7 @@ def get_cart():
 
 @cart.route("/<int:cart_id>", methods=["DELETE"])
 @jwt_required
+@only_user
 def remove_from_cart(cart_id):
     try:
         user_id = g.user['user_id']

@@ -10,9 +10,9 @@ auth = Blueprint("auth", __name__, url_prefix="/api/v1/auth")
 def register():
     try:
         username = request.form.get('username')
-        password = request.form.get('password')
         email = request.form.get('email')
-        if not username or not password or not email:
+        password = request.form.get('password')
+        if not username or not email or not password:
             return jsonify({'error': 'Username, email, dan password wajib diisi'}), 400
 
         conn = get_connection()
@@ -37,17 +37,17 @@ def register():
 @auth.route('/login', methods=['POST'])
 def login():
     try:
-        username = request.form.get('username')
+        email = request.form.get('email')
         password = request.form.get('password')
-        if not username or not password:
-            return jsonify({'error': 'Username dan password wajib diisi'}), 400
+        if not email or not password:
+            return jsonify({'error': 'Email dan password wajib diisi'}), 400
 
         conn = get_connection()
         cursor = conn.cursor(dictionary=True)
         hashed_pw = hashlib.sha256(password.encode()).hexdigest()
         cursor.execute(
-            "SELECT * FROM users WHERE username=%s AND password=%s",
-            (username, hashed_pw)
+            "SELECT * FROM users WHERE email=%s AND password=%s",
+            (email, hashed_pw)
         )
         user = cursor.fetchone()
         cursor.close()
@@ -56,19 +56,21 @@ def login():
         if user and isinstance(user, dict) and "id" in user and "username" in user:
             token_data = {
                 "user_id": user["id"],
-                "username": user["username"]
+                "username": user["username"],
+                "role": user.get("role", "user")
             }
             token = generate_token(token_data)
             return jsonify({
                 "token": token,
                 "user": {
                     "id": user["id"],
-                    "username": user["username"]
+                    "username": user["username"],
+                    "role": user.get("role", "user")
                 }
             }), 200
         else:
             print("DEBUG user value:", user)
-            return jsonify({"error": "Username atau password salah"}), 401
+            return jsonify({"error": "Email atau password salah"}), 401
     except Exception as e:
         print(f"Login error: {e}")
         return jsonify({'error': 'Terjadi kesalahan di server'}), 500

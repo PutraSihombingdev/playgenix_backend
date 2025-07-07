@@ -43,3 +43,21 @@ def jwt_required(f):
             return jsonify({'error': 'Token tidak valid'}), 401
         return f(*args, **kwargs)
     return decorated
+
+def only_admin(f):
+    from functools import wraps
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        if not hasattr(g, 'user') or g.user.get('role') != 'admin':
+            return jsonify({'error': 'Hanya admin yang boleh mengakses endpoint ini'}), 403
+        return f(*args, **kwargs)
+    return decorated
+
+def only_user(f):
+    from functools import wraps
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        if not hasattr(g, 'user') or g.user.get('role') != 'user':
+            return jsonify({'error': 'Hanya user yang boleh mengakses endpoint ini'}), 403
+        return f(*args, **kwargs)
+    return decorated

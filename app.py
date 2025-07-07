@@ -7,6 +7,7 @@ from routes.product import product
 from routes.cart import cart
 from routes.payment import payment
 from routes.transaction import transaction
+from routes.review import review
 
 load_dotenv()
 
@@ -22,6 +23,7 @@ app.register_blueprint(product)
 app.register_blueprint(cart)
 app.register_blueprint(payment)
 app.register_blueprint(transaction)
+app.register_blueprint(review)
 
 # Health check endpoint
 @app.route('/api/health', methods=['GET'])

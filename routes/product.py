@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify, g
 from db import get_connection
-from utils.jwt_helper import jwt_required
+from utils.jwt_helper import jwt_required, only_admin
 
 product = Blueprint("product", __name__, url_prefix="/api/v1/products")
 
@@ -19,6 +19,7 @@ def get_products():
 
 @product.route("/", methods=["POST"])
 @jwt_required
+@only_admin
 def add_product():
     try:
         data = request.form
@@ -43,6 +44,7 @@ def add_product():
 
 @product.route("/<int:id>", methods=["PUT"])
 @jwt_required
+@only_admin
 def update_product(id):
     try:
         data = request.form
@@ -67,6 +69,7 @@ def update_product(id):
 
 @product.route("/<int:id>", methods=["DELETE"])
 @jwt_required
+@only_admin
 def delete_product(id):
     try:
         conn = get_connection()
