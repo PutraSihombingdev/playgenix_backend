@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, Blueprint, request
 from flask_cors import CORS
 from dotenv import load_dotenv
 from config import Config
@@ -8,6 +8,8 @@ from routes.cart import cart
 from routes.payment import payment
 from routes.transaction import transaction
 from routes.review import review
+from flask_jwt_extended import JWTManager
+
 
 load_dotenv()
 
@@ -15,7 +17,13 @@ app = Flask(__name__)
 app.config.from_object(Config)
 
 # Enable CORS for all routes
-CORS(app, origins=Config.CORS_ORIGINS, supports_credentials=True)
+CORS(app, 
+     origins=["http://localhost:5173", "http://127.0.0.1:5173"], 
+     supports_credentials=True, 
+     methods=['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+     allow_headers=['Content-Type', 'Authorization'])
+
+jwt = JWTManager(app)
 
 # Register Blueprints
 app.register_blueprint(auth)
@@ -35,9 +43,18 @@ def health_check():
 def not_found(error):
     return jsonify({'error': 'Endpoint not found'}), 404
 
+from flask import send_from_directory
+
+@app.route('/uploads/payments/<filename>')
+def uploaded_file(filename):
+    import os
+    uploads = os.path.join(os.getcwd(), 'uploads', 'payments')
+    return send_from_directory(uploads, filename)
+
 @app.errorhandler(500)
 def internal_error(error):
     return jsonify({'error': 'Internal server error'}), 500
+
 
 if __name__ == '__main__':
     print("🚀 Starting PlayGenix Backend...")
